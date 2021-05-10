@@ -78,13 +78,28 @@ let UploadDataProvider = {
 
         if(req.query.videoId){
             console.log("inside controller");
+
+            // increment viewcount for video views
             let query1 = "select viewCount from video where videoId = ?";
             let count = await db.querySql(query1,[req.query.videoId]);
             console.log(count);
             let newCount = count[0].viewCount+1;
             let query = "update video set viewCount = ? where videoId = ?";
 
-            return await db.querySql(query,[newCount,req.query.videoId]);
+            let out1=  await db.querySql(query,[newCount,req.query.videoId]);
+
+            //increment viewcount of course
+            let courses = count[0].courses.split(',');
+
+            courses.forEach(async element => {
+                let query2 = "select viewCount from course where courseName = ?";
+                count = db.querySql(query2,[element]);
+                newCount = count[0].viewCount + 1;
+                let query3 = "update course set viewCount = ? where courseName = ?";
+                await db.querySql(query3,[newCount,element]);
+            });
+
+            return "Successfful";
 
 
         }

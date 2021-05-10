@@ -1,4 +1,4 @@
-let CourseService = require(__dirname+'../../Service/CourseService');
+let CourseService = require('../Service/CourseService');
 let { success, error } = require("../../../utils/ResponseUtils");
 
 
@@ -7,9 +7,9 @@ let CourseController = {
 		try{
 			if(req.body){
 				let output =  await CourseService.createCourse(req.body);
-				return output;
+				return success(res,output);
 			}else{
-				return "Bad Request";
+				return error(res, null, 400, "Bad Request");;
 			}
 		}catch(err){
 			console.error("Error occurred while creating Course: ", err);
@@ -19,8 +19,8 @@ let CourseController = {
 	
 	getCourse: async (req, res) => {
 		try{
-			if(req.query.id){
-				let output = await CourseService.getCourse(req.query.id);
+			if(req.query.courseId){
+				let output = await CourseService.getCourse(req.query.courseId);
 				return success(res, output);
 			}else{
 				return error(res, null, 400, "Bad Request");
@@ -33,9 +33,9 @@ let CourseController = {
 
     deleteCourse : async(req,res) =>{
         try{
-            if(req.query.id){
+            if(req.query.courseId){
                 console.log("req.query.id : " , req.query.id);
-                let output = await CourseService.deleteCourse(req.query.id);
+                let output = await CourseService.deleteCourse(req.query.courseId);
                 return success(res,"Deleted Successfully");
             }else{
                 return error(res,null, 400 , "Bad Request");
@@ -48,7 +48,7 @@ let CourseController = {
 
     updateCourse: async(req,res) =>{
 		try{
-			if(req.body && req.body.id){
+			if(req.body && req.body.courseId){
 				let output = await CourseService.updateCourse(req.body);
 				return success(res, output);
 			}else{

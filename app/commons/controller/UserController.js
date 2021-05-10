@@ -9,9 +9,9 @@ let UserController = {
 			if(req.body){
                 console.log(req.body);
 				let output =  await UserService.createStudent(req.body);
-				return output;
+				return success(res, output);
 			}else{
-				return "Bad Request";
+				return error(res, null, 400, "Bad Request");
 			}
 		}catch(err){
 			console.error("Error occurred while creating Student: ", err);
@@ -38,9 +38,9 @@ let UserController = {
 			if(req.body){
                 console.log(req.body);
 				let output =  await UserService.createInstructor(req.body);
-				return output;
+				return success(res, output);
 			}else{
-				return "Bad Request";
+				return error(res, null, 400, "Bad Request");
 			}
 		}catch(err){
 			console.error("Error occurred while creating Student: ", err);
